@@ -1,0 +1,32 @@
+server:
+  port: 8080
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+      - id: catalogo-servicio
+        uri: lb://catalogo-servicio
+        predicates:
+        - Path=/api/catalogo/**
+      - id: pagos-servicio
+        uri: lb://pagos-servicio
+        predicates:
+        - Path=/payments/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:4200"
+            allowedHeaders: "*"
+            allowedMethods:
+            - GET
+            - POST
+            - PUT
+            - DELETE
